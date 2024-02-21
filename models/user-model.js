@@ -37,4 +37,9 @@ UserSchema.pre('save', async function() {
     this.password = await bcrypt.hash(this.password, salt)
 })
 
+
+UserSchema.statics.comparePassword = async function(candidatePassword, password) {
+    const match = await bcrypt.compare(candidatePassword, password)
+    return match
+}
 module.exports = mongoose.model('User', UserSchema)
