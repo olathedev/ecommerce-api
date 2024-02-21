@@ -1,7 +1,7 @@
 const { StatusCodes } = require('http-status-codes')
 const UserModel = require('../models/user-model')
 const CustomApiError = require('../errors/custom-errors')
-const {createToken} = require('../utils')
+const {setCookie} = require('../utils')
 
 const register = async (req, res) => {
     
@@ -18,8 +18,9 @@ const register = async (req, res) => {
     const isFirstAccount = await UserModel.countDocuments({}) === 0
     const role = isFirstAccount ? 'admin' : 'user'
     const user = await UserModel.create({firstname, lastname, email, password, role})
-    const token = createToken({user})
-    res.status(StatusCodes.CREATED).json({user, token})
+    const tokenUser = {_id: user._id, email: user.email, role: user.role}
+    setCookie(res, tokenUser)
+    res.status(StatusCodes.CREATED).json({user: tokenUser})
 
 }
 

@@ -1,5 +1,7 @@
-const createToken = require('./jwt')
+const {createToken, verifyJwt, setCookie} = require('./jwt')
 
 module.exports = {
-    createToken
+    createToken,
+    verifyJwt,
+    setCookie
 }
