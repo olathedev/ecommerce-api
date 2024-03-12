@@ -16,6 +16,7 @@ const errorHandler = require('./middlewares/error-handler')
 const cookieParser = require('cookie-parser')
 // Routes
 const authRoutes = require('./routes/auth-routes')
+const userRoutes = require('./routes/user-routes')
 
 app.use(cors())
 app.use(morgan('dev'))
@@ -30,6 +31,8 @@ app.get('/', (req, res) => {
 
 // routes
 app.use('/api/v1/auth', authRoutes)
+app.use('/api/v1/users', userRoutes)
+
 
 app.use(notFound)
 app.use(errorHandler)

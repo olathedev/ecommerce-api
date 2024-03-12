@@ -10,7 +10,7 @@ const createToken = (payload) => {
 
 
 const verifyJwt = (token) => {
-    return jwt.verify(token, process.env.JWT_LIFETIME)
+    return jwt.verify(token, process.env.JWT_SECRET)
 }
 
 const setCookie = (res, user) => {

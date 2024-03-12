@@ -12,6 +12,10 @@ const errorHandler = (err, req, res, next) => {
         customError.statusCode = StatusCodes.BAD_REQUEST
     }
 
+    if(err.name === 'CastError' && err.kind === 'ObjectId') {
+        customError.msg = `${err.value} is not a valid id`
+        customError.statusCode = StatusCodes.NOT_FOUND
+    }
     
     res.status(customError.statusCode).json({message: customError.msg})
     // res.status(customError.statusCode).json({err})

@@ -28,8 +28,15 @@ class UnAuthorizedError extends CustomApiError {
     }
 }
 
+class UnAuthorizedForbiden extends CustomApiError {
+    constructor(message) {
+        super(message)
+        this.statusCode = StatusCodes.FORBIDDEN
+    }
+}
 module.exports = {
     BadRequest,
     NotFoundError,
-    UnAuthorizedError
+    UnAuthorizedError,
+    UnAuthorizedForbiden
 }
