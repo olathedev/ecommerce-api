@@ -1,7 +1,7 @@
 const { StatusCodes } = require('http-status-codes')
 const UserModel = require('../models/user-model')
 const CustomApiError = require('../errors/custom-errors')
-const {setCookie} = require('../utils')
+const {setCookie, createTokenUser} = require('../utils')
 
 const register = async (req, res) => {
     
@@ -19,7 +19,7 @@ const register = async (req, res) => {
     const role = isFirstAccount ? 'admin' : 'user'
 
     const user = await UserModel.create({firstname, lastname, email, password, role})
-    const tokenUser = {_id: user._id, email: user.email, role: user.role}
+    const tokenUser = createTokenUser(user)
     // attach token to res
     setCookie(res, tokenUser)
 
@@ -45,7 +45,7 @@ const login = async (req, res) => {
         throw new CustomApiError.UnAuthorizedError("incorrect password")
     }
 
-    const tokenUser = {_id: user._id, email: user.email, role: user.role}
+    const tokenUser = createTokenUser(user)
     // attach token to res
     setCookie(res, tokenUser)
 
