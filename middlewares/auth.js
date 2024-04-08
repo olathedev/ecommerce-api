@@ -9,11 +9,15 @@ const authenticateUser = async (req, res, next) => {
     }
 
     try {
+
         const {_id, email, role} = verifyJwt(token)
         req.user = {userId: _id, email, role}
         next()
+
     } catch (error) {
+
         throw new CustomApiError.UnAuthorizedError("Invalid token")
+        
     }
 
 }
