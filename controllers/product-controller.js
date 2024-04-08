@@ -1,5 +1,6 @@
 const { StatusCodes } = require('http-status-codes')
 const ProductModel = require('../models/product-model')
+const customError = require('../errors/custom-errors')
 
 
 const createProduct = async(req, res) => {
@@ -23,15 +24,32 @@ const getAllProducts = async(req, res) => {
 
 
 const getSingleProduct = async(req, res) => {
-    res.send("Get single product")
+   const {id} = req.params
+
+   const product = await ProductModel.findOne({_id: id})
+
+   if(!product) {
+    throw new customError.NotFoundError("No product found with this ID")
+   }
+
+   res.status(StatusCodes.OK).json({product})
+
 }
 
 const updateProduct = async(req, res) => {
-    res.send("Update product")
+    const {id} = req.params
+
+    const product = await ProductModel.findOneAndUpdate({_id: id}, req.body, {new: true, runValidators: true})
+
+    if(!product) {
+        throw new customError.NotFoundError("No product found with this ID")
+    }
+
+    res.status(StatusCodes.OK).json({product})
 }
 
 const deleteProduct = async(req, res) => {
-    res.send("Delete Products")
+    const {id} = req.params
 }
 
 
