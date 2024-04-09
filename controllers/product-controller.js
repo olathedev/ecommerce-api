@@ -2,7 +2,7 @@ const { StatusCodes } = require('http-status-codes')
 const ProductModel = require('../models/product-model')
 const customError = require('../errors/custom-errors')
 const validateProduct = require('../validators/product-validator')
-
+const path = require('path')
 
 const createProduct = async(req, res) => {
 
@@ -10,11 +10,11 @@ const createProduct = async(req, res) => {
 
     // validate req.body
 
-    const {error} = validateProduct(req.body)
+    // const {error} = validateProduct(req.body)
 
-    if(error) {
-        throw new customError.BadRequest(error)
-    }
+    // if(error) {
+    //     throw new customError.BadRequest(error)
+    // }
 
     // create user Property on req.body
     req.body.user = userId
@@ -74,7 +74,27 @@ const deleteProduct = async(req, res) => {
 
 
 const uploadProductImage = async(req, res) => {
-    res.send("upload product imae")
+    
+    if(!req.files) {
+        throw new customError.BadRequest("No image uploaded, please upload an image")
+    }
+
+    const image = req.files.image
+    const maxSize = 1024 * 1024
+
+
+    if(!image.mimetype.startsWith('image')) {
+        throw new customError.BadRequest("Upload a valid image")
+    }
+
+    if(image.size > maxSize) {
+        throw new customError.BadRequest("Please Upload Image not above 1mb")
+    }
+
+    const imagePath = path.join(__dirname, '../public/uploads/' + image.name)
+
+    await image.mv(imagePath)
+    res.status(StatusCodes.OK).json({image: `uploads/${image.name}`})
 }
 
 
