@@ -15,7 +15,7 @@ const  {
 router.route('/').get(authenticateUser, authorizePermisions('admin'), getAllUsers)
 router.route('/showCurrentUser').get(authenticateUser, showCurrentUser)
 router.route('/updateUser').patch(authenticateUser, updateUser)
-router.route('/updateUserPassword').patch(authenticateUser, updateUserPassword)
+router.route('/updateUserPassword').patch(authenticateUser, updateUserPassword) 
 router.route('/:id').get(getSingleUser)
 
 module.exports = router

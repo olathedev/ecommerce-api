@@ -19,6 +19,7 @@ const ProductSchema = new mongoose.Schema({
 
     image: {
         type: String,
+        default: '/uploads/default.png',
         required: true
     },
 
@@ -61,11 +62,12 @@ const ProductSchema = new mongoose.Schema({
 
     user: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
 }, {timestamps: true})
 
 
-const ProductModel = mongoose.model('product', ProductSchema)
+const ProductModel = mongoose.model('Product', ProductSchema)
 
 module.exports = ProductModel

@@ -24,7 +24,7 @@ router
 
 
 router
-    .route('/uploadImage', [authenticateUser, authorizePermisions('admin'),uploadProductImage])
+    .route('/uploadImage').post([authenticateUser, authorizePermisions('admin'), uploadProductImage])
 
 
 router
