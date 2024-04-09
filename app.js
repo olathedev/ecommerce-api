@@ -14,6 +14,8 @@ const cors = require('cors')
 const notFound = require('./middlewares/not-found')
 const errorHandler = require('./middlewares/error-handler')
 const cookieParser = require('cookie-parser')
+const fileUpload = require('express-fileupload')
+
 // Routes
 const authRoutes = require('./routes/auth-routes')
 const userRoutes = require('./routes/user-routes')
@@ -23,6 +25,8 @@ app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(cookieParser(process.env.JWT_SECRET))
+app.use(express.static('./public'))
+app.use(fileUpload)
 
 app.get('/', (req, res) => {
     console.log(req.signedCookies);

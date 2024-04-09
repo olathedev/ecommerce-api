@@ -1,11 +1,21 @@
 const { StatusCodes } = require('http-status-codes')
 const ProductModel = require('../models/product-model')
 const customError = require('../errors/custom-errors')
+const validateProduct = require('../validators/product-validator')
 
 
 const createProduct = async(req, res) => {
 
     const {userId} = req.user
+
+    // validate req.body
+
+    const {error} = validateProduct(req.body)
+
+    if(error) {
+        throw new customError.BadRequest(error)
+    }
+
     // create user Property on req.body
     req.body.user = userId
 
@@ -51,13 +61,13 @@ const updateProduct = async(req, res) => {
 const deleteProduct = async(req, res) => {
     const {id} = req.params
 
-    const product = await ProductModel.findOne({_id: id})
+    const product = await ProductModel.findOneAndDelete({_id: id})
  
     if(!product) {
      throw new customError.NotFoundError("No product found with this ID")
     }
 
-    await product.remove()
+   
 
     res.status(StatusCodes.OK).json({msg: "Product successfully deleted"})
 }
