@@ -12,6 +12,8 @@ const { authenticateUser,
         authorizePermisions
      } = require('../middlewares/auth')
 
+const { getSingleProductReviews } = require('../controllers/reviews-controller')
+
 const router = express.Router()
 
 // unprotected routes
@@ -36,5 +38,7 @@ router
 
     .delete([authenticateUser, authorizePermisions('admin'), deleteProduct])
 
+
+router.route('/:id/reviews').get(getSingleProductReviews)
 
 module.exports = router
