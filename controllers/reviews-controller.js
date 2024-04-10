@@ -1,8 +1,38 @@
 const ReviewModel = require('../models/reviews-model')
+const ProductModel = require('../models/product-model')
+const CustomApiError = require('../errors/custom-errors')
+const { createTokenUser } = require('../utils')
+const { StatusCodes } = require('http-status-codes')
+ 
 
 
-const createReview = (req, res) => {
-    res.send("create reveiw")
+const createReview = async (req, res) => {
+    const {product: productId} = req.body
+
+    const isProductValid = await ProductModel.findOne({_id: productId})
+
+    if(!isProductValid) {
+        throw new CustomApiError.NotFoundError(
+            `No product with id: ${productId}`
+        )
+    }
+
+    const reviewAlreadyExists = await ReviewModel.findOne({
+        product: productId,
+        user: req.user.userId
+    })
+
+    if(reviewAlreadyExists) {
+        throw new CustomApiError.BadRequest(
+            'Already reviewed this product'
+        )
+    }
+
+    req.body.user = req.user.userId
+
+    const review = await ReviewModel.create(req.body)
+
+    res.status(StatusCodes.OK).json({review})
 }
 
 const getAllReviews = (req, res) => {
