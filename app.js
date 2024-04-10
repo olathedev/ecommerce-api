@@ -20,6 +20,7 @@ const fileUpload = require('express-fileupload')
 const authRoutes = require('./routes/auth-routes')
 const userRoutes = require('./routes/user-routes')
 const productRoutes = require('./routes/product-routes')
+const reviewRoutes= require('./routes/review-routes')
 
 app.use(cors())
 app.use(morgan('dev'))
@@ -38,6 +39,8 @@ app.get('/', (req, res) => {
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/users', userRoutes)
 app.use('/api/v1/products', productRoutes)
+app.use('/api/v1/reviews', reviewRoutes)
+
 
 
 app.use(notFound)
