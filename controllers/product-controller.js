@@ -36,7 +36,7 @@ const getAllProducts = async(req, res) => {
 const getSingleProduct = async(req, res) => {
    const {id} = req.params
 
-   const product = await ProductModel.findOne({_id: id})
+   const product = await ProductModel.findOne({_id: id}).populate('reviews')
 
    if(!product) {
     throw new customError.NotFoundError("No product found with this ID")
@@ -74,7 +74,7 @@ const deleteProduct = async(req, res) => {
 
 
 const uploadProductImage = async(req, res) => {
-    
+
     if(!req.files) {
         throw new customError.BadRequest("No image uploaded, please upload an image")
     }
