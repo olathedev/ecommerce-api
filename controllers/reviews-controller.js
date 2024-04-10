@@ -32,16 +32,29 @@ const createReview = async (req, res) => {
 
     const review = await ReviewModel.create(req.body)
 
+    res.status(StatusCodes.CREATED).json({review})
+}
+
+const getAllReviews = async (req, res) => {
+    const reviews = await ReviewModel.find()
+
+    res.status(StatusCodes.OK).json({reviews, count: reviews.length})
+}
+
+
+const getSingleReview = async (req, res) => {
+    const {id: productId} = req.params
+
+    const review = await  ReviewModel.findOne({_id: productId})
+
+    if(!review) {
+        throw new CustomApiError.NotFoundError(
+            `No review found with id:${productId}`
+        )
+    }
+
     res.status(StatusCodes.OK).json({review})
-}
 
-const getAllReviews = (req, res) => {
-    res.send("get all reveiw")
-}
-
-
-const getSingleReview = (req, res) => {
-    res.send("get Single Review")
 }
 
 const updateReview = (req, res) => {
