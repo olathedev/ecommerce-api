@@ -28,7 +28,7 @@ const OrderSchema = mongoose.Schema({
         required: true
     },
 
-    cartItems: [singleCartItemSchema],
+    orderItems: [singleCartItemSchema],
 
     status: {
         type: String,
@@ -43,16 +43,16 @@ const OrderSchema = mongoose.Schema({
         required: true
     },
 
-    clientSecret: {
+    paymentUrl: {
         type: String,
         required: true
     },
 
-    paymentId: {
+    reference: {
         type: String,
         required: true
-    },
-
+    }
+    
 }, {
     timestamps: true
 })
